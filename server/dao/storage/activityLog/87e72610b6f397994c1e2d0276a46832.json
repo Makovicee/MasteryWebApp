@@ -1,0 +1,13 @@
+{
+  "name": "Dancing",
+  "quote": "tralalaa",
+  "timeGoal": 100,
+  "deadline": "2024-011-15T17:30:00Z",
+  "color": "red",
+  "id": "87e72610b6f397994c1e2d0276a46832",
+  "owner": "623206733e0bc88ccbb601f973069e64",
+  "spentTime": 30,
+  "achieved": true,
+  "remaining": 70,
+  "completionRate": "30.00"
+}
