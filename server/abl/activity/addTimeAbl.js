@@ -7,7 +7,7 @@ const schema = {
   type: "object",
   properties: {
     id: { type: "string" },
-    time: { type: "number" },
+    time: { type: "number", multipleOf: 0.01 },
   },
   required: ["id", "time"],
   additionalProperties: false,
@@ -15,21 +15,29 @@ const schema = {
 
 async function AddTimeAbl(req, res) {
   try {
-    let activity = req.body;
-    const valid = ajv.validate(schema, activity);
-    if (!valid) {
-      res.status(400).json({
-        code: "dtoInIsNotValid",
-        message: "dtoIn is not valid",
-        validationError: ajv.errors,
-      });
-      return;
+    const id = req.query.id;
+    const { time } = req.body;
+    const timeNum = parseFloat(time);
+    console.log("time:", timeNum);
+    console.log("reqbody:", req.body);
+    console.log("id:", id);
+    console.log(typeof timeNum);
+
+    if (!timeNum && timeNum !== 0) {
+      console.log("llololoolo", timeNum);
+      return res
+        .status(400)
+        .json({ message: "Time parameter is required a si kokot" });
     }
-    activity = activityDao.addTime(activity.id, activity.time);
+
+    const activity = activityDao.addTime(id, timeNum);
     res.json(activity);
-  } catch (e) {
-    res.status(500).json({ message: e.message });
+  } catch (error) {
+    console.error("An error occurred:", error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 }
+
+module.exports = AddTimeAbl;
 
 module.exports = AddTimeAbl;

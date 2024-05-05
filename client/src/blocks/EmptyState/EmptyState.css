@@ -1,0 +1,11 @@
+.EmptyState {
+  text-align: center;
+  padding: 5%;
+}
+
+.Spartan {
+  width: 275px;
+  height: auto;
+  border-radius: 10px;
+  margin-bottom: 2%;
+}

@@ -1,0 +1,13 @@
+.footer {
+  position: fixed; /* Changed to fixed */
+  bottom: 0; /* Position it at the bottom */
+  left: 0; /* Position it at the left */
+  width: 100%; /* Make it full width */
+
+  background-color: rgb(255, 245, 61);
+  padding-top: 1%;
+  font-size: large;
+  color: black;
+  font-weight: bold;
+  z-index: 1;
+}

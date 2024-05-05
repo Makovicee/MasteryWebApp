@@ -1,0 +1,19 @@
+.stop-watch {
+  font-size: 4em;
+  color: yellow;
+  margin-top: 10vh;
+}
+.control {
+  background: none;
+  border: none;
+  font-size: 0.5em;
+  color: black;
+  font-weight: bold;
+  border: 3px solid rgb(255, 255, 255);
+  background-color: rgb(255, 242, 100);
+  box-shadow: 0 0 5em rgb(255, 229, 100);
+  border-radius: 15px;
+  padding: 3%;
+  margin-top: 3vh;
+  width: 45vh;
+}

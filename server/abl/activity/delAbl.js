@@ -13,20 +13,30 @@ const schema = {
 
 async function DelAbl(req, res) {
   try {
-    let activity = req.body;
-    const valid = ajv.validate(schema, activity);
-    if (!valid) {
+    const { id } = req.query;
+    const isValid = ajv.validate(schema, { id });
+    if (!isValid) {
+      const { message, errors } = ajv.errors[0];
       res.status(400).json({
         code: "dtoInIsNotValid",
         message: "dtoIn is not valid",
-        validationError: ajv.errors,
+        validationError: [{ message }],
       });
       return;
     }
-    activity = activityDao.del(activity.id);
-    res.json(activity);
-  } catch (e) {
-    res.status(500).json({ message: e.message });
+
+    const activity = await activityDao.del(id);
+    console.log(activity);
+    if (!activity) {
+      res.status(404).json({
+        code: "activityNotFound",
+        message: `Activity with id ${id} not found`,
+      });
+      return;
+    }
+    res.json("Activity deleted");
+  } catch ({ message }) {
+    res.status(500).json({ message });
   }
 }
 

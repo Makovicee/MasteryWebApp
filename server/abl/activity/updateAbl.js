@@ -9,8 +9,7 @@ const schema = {
     name: { type: "string" },
     quote: { type: "string" },
     timeGoal: { type: "number" },
-    deadline: { type: "string" },
-    color: { type: "string" },
+    claimed: { type: "boolean" },
   },
   required: ["id"],
   additionalProperties: false,
@@ -19,6 +18,7 @@ const schema = {
 async function UpdateAbl(req, res) {
   try {
     let activity = req.body;
+    console.log(activity);
     const valid = ajv.validate(schema, activity);
     if (!valid) {
       res.status(400).json({

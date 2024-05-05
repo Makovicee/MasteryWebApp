@@ -7,6 +7,7 @@ const AddTimeAbl = require("../abl/activity/addTimeAbl.js");
 const DelAbl = require("../abl/activity/delAbl.js");
 const UpdateAbl = require("../abl/activity/updateAbl.js");
 const GetByIdAbl = require("../abl/activity/getByIdAbl.js");
+const GetAllAbl = require("../abl/activity/getAllAbl.js");
 
 router.post("/create", (req, res) => {
   CreateAbl(req, res);
@@ -30,5 +31,8 @@ router.post("/update", (req, res) => {
 
 router.get("/getById", (req, res) => {
   GetByIdAbl(req, res);
+});
+router.get("/getAll", (req, res) => {
+  GetAllAbl(req, res);
 });
 module.exports = router;

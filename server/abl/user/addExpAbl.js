@@ -16,6 +16,7 @@ const schema = {
 async function addExpAbl(req, res) {
   try {
     let user = req.body;
+    console.log(user);
     const valid = ajv.validate(schema, user);
     if (!valid) {
       res.status(400).json({

@@ -12,13 +12,14 @@ function create(activity) {
 
     //just a temporary solution, in a final version the actvity.owner will be set to the id of the user that created the activity
     //for now the owner is random when the activity is created
-    activity.owner = crypto.randomBytes(16).toString("hex");
+    // activity.owner = crypto.randomBytes(16).toString("hex");
 
     //set time related values
     activity.spentTime = 0;
     activity.achieved = false;
     activity.remaining = activity.timeGoal;
     activity.completionRate = 0;
+    activity.claimed = false;
 
     const filePath = path.join(activityFolderPath, `${activity.id}.json`);
     const fileData = JSON.stringify(activity);
@@ -95,6 +96,7 @@ function del(activityId) {
   } catch (error) {
     throw { code: "failedToDeleteActivity", message: error.message };
   }
+  return true;
 }
 
 // update the activity selected specifics (name,quote,time goal, ...) but keep other values the same
@@ -134,6 +136,22 @@ function getById(activityId) {
   }
 }
 
+function getAll() {
+  try {
+    const files = fs.readdirSync(activityFolderPath);
+    const activityList = files.map((file) => {
+      const fileData = fs.readFileSync(
+        path.join(activityFolderPath, file),
+        "utf8"
+      );
+      return JSON.parse(fileData);
+    });
+    return activityList;
+  } catch (error) {
+    throw { code: "failedToListUsers", message: error.message };
+  }
+}
+
 module.exports = {
   create,
   get,
@@ -141,4 +159,5 @@ module.exports = {
   del,
   update,
   getById,
+  getAll,
 };

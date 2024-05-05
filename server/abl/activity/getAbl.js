@@ -8,7 +8,7 @@ const schema = {
     owner: { type: "string" },
     status: { type: "boolean" },
   },
-  required: ["owner"],
+  required: [],
   additionalProperties: false,
 };
 

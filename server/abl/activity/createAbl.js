@@ -9,10 +9,9 @@ const schema = {
     name: { type: "string" },
     quote: { type: "string" },
     timeGoal: { type: "number" },
-    deadline: { type: "string" },
-    color: { type: "string" },
+    owner: { type: "string" },
   },
-  required: ["name", "timeGoal", "color"],
+  required: ["name", "timeGoal", "owner"],
   additionalProperties: false,
 };
 

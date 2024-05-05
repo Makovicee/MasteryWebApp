@@ -13,8 +13,8 @@ const schema = {
 
 async function GetByIdAbl(req, res) {
   try {
-    let param = req.body;
-    const valid = ajv.validate(schema, param);
+    const id = req.query.id; // Extract ID from query string
+    const valid = ajv.validate(schema, { id }); // Validate ID
     if (!valid) {
       res.status(400).json({
         code: "dtoInIsNotValid",
@@ -23,11 +23,11 @@ async function GetByIdAbl(req, res) {
       });
       return;
     }
-    const activity = await activityDao.getById(param.id);
+    const activity = await activityDao.getById(id);
     if (!activity) {
       res.status(404).json({
         code: "activityNotFound",
-        message: `activity ${param.id} not found`,
+        message: `activity ${id} not found`,
       });
       return;
     }

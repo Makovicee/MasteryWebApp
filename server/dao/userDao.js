@@ -31,61 +31,6 @@ function del(user) {
   }
 }
 
-//get users info about progress (lvl,exp and based on lvl and exp calculate honor)
-function getMR(user) {
-  try {
-    const filePath = path.join(userFolderPath, `${user.id}.json`);
-    const fileData = fs.readFileSync(filePath, "utf8");
-    const userData = JSON.parse(fileData);
-
-    //determine users honor based on his lvl
-    let honor = "";
-    if (userData.lvl <= 5) {
-      honor = "Apprentice";
-      console.log("lol");
-    } else if (userData.lvl > 5 && userData.lvl <= 10) {
-      honor = "Prodigy";
-    } else if (userData.lvl > 10 && userData.lvl <= 15) {
-      honor = "Virtuoso";
-    } else if (userData.lvl > 15 && userData.lvl <= 20) {
-      honor = "Connoisseur";
-    } else if (userData.lvl > 20) {
-      // levels beyond twenty does not change the honor
-      honor = "Savant";
-    }
-
-    //loop through all the users activites
-    const activities = fs.readdirSync(activityFolderPath);
-    let completedActivities = 0;
-    let pendingActivities = 0;
-    for (const activity of activities) {
-      const activityData = fs.readFileSync(
-        path.join(activityFolderPath, activity),
-        "utf8"
-      );
-      const activityJson = JSON.parse(activityData);
-      if (activityJson.owner === user.id) {
-        if (activityJson.achieved === true) {
-          completedActivities++;
-        } else {
-          pendingActivities++;
-        }
-      }
-    }
-
-    return {
-      lvl: userData.lvl,
-      exp: userData.exp,
-      honor: honor,
-      completed: completedActivities,
-      pending: pendingActivities,
-    };
-  } catch (error) {
-    throw { code: "failedToGetMR", message: error.message };
-  }
-}
-
-//add exp to user and lvl up if needed
 function addExp(user, activityTimeGoal) {
   try {
     const filePath = path.join(userFolderPath, `${user.id}.json`);
@@ -110,4 +55,60 @@ function addExp(user, activityTimeGoal) {
     throw { code: "failedToAddExp", message: error.message };
   }
 }
-module.exports = { create, getMR, addExp, del };
+
+//get users info about progress (lvl,exp and based on lvl and exp calculate honor)
+//list all users
+function list() {
+  try {
+    const files = fs.readdirSync(userFolderPath);
+    const userList = files.map((file) => {
+      const fileData = fs.readFileSync(path.join(userFolderPath, file), "utf8");
+      const userData = JSON.parse(fileData);
+
+      //determine users honor based on his lvl
+      let honor = "";
+      if (userData.lvl <= 5) {
+        honor = "Apprentice";
+      } else if (userData.lvl > 5 && userData.lvl <= 10) {
+        honor = "Prodigy";
+      } else if (userData.lvl > 10 && userData.lvl <= 15) {
+        honor = "Virtuoso";
+      } else if (userData.lvl > 15 && userData.lvl <= 20) {
+        honor = "Connoisseur";
+      } else if (userData.lvl > 20) {
+        honor = "Savant";
+      }
+
+      //loop through all the users activites
+      const activities = fs.readdirSync(activityFolderPath);
+      let completedActivities = 0;
+      let pendingActivities = 0;
+      for (const activity of activities) {
+        const activityData = fs.readFileSync(
+          path.join(activityFolderPath, activity),
+          "utf8"
+        );
+        const activityJson = JSON.parse(activityData);
+        if (activityJson.owner === userData.id) {
+          if (activityJson.achieved === true) {
+            completedActivities++;
+          } else {
+            pendingActivities++;
+          }
+        }
+      }
+
+      return {
+        ...userData,
+        honor: honor,
+        completed: completedActivities,
+        pending: pendingActivities,
+      };
+    });
+    return userList;
+  } catch (error) {
+    throw { code: "failedToListUsers", message: error.message };
+  }
+}
+
+module.exports = { create, addExp, del, list };
